@@ -2,25 +2,33 @@ var index = require('../index.js');
 var assert = require('assert');
 
 describe('index (module entry point)', function () {
+  describe('tdesCmac(key, message, [options])', function () {
+    it('performs the TDES-CMAC algorithm', function () {
+      var key = Buffer.from('0123456789ABCDEF23456789ABCDEF01456789ABCDEF0123', 'hex');
+      var message = Buffer.from('', 'hex');
+      var result = index.tdesCmac(key, message);
+      assert.equal(result, '7db0d37df936c550');
+    });
+  });
   describe('aesCmac(key, message, [options])', function () {
     it('performs the AES-CMAC algorithm', function () {
-      var key = new Buffer('2b7e151628aed2a6abf7158809cf4f3c', 'hex');
-      var message = new Buffer('6bc1bee22e409f96e93d7e117393172a', 'hex');
+      var key = Buffer.from('2b7e151628aed2a6abf7158809cf4f3c', 'hex');
+      var message = Buffer.from('6bc1bee22e409f96e93d7e117393172a', 'hex');
       var result = index.aesCmac(key, message);
       assert.equal(result, '070a16b46b4d4144f79bdd9dd04a287c');
     });
 
     it('can take a buffer or string as the key', function () {
       var stringKey = 'averysecretvalue';
-      var bufferKey = new Buffer(stringKey);
-      var message = new Buffer('some message');
+      var bufferKey = Buffer.from(stringKey);
+      var message = Buffer.from('some message');
       assert.equal(index.aesCmac(stringKey, message), index.aesCmac(bufferKey, message));
     });
 
     it('can take a buffer or string as the message', function () {
       var key = 'averysecretvalue';
       var stringMessage = 'some message';
-      var bufferMessage = new Buffer(stringMessage);
+      var bufferMessage = Buffer.from(stringMessage);
       assert.equal(index.aesCmac(key, stringMessage), index.aesCmac(key, bufferMessage));
     });
 

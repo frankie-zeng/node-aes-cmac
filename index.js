@@ -1,10 +1,19 @@
 var aesCmac = require('./lib/aes-cmac.js').aesCmac;
+var tdesCmac = require('./lib/tdes-cmac.js').tdesCmac;
 
 exports.aesCmac = function (key, message, options) {
   validateKey(key);
   var messageBuffer = validateMessage(message);
   options = options ? options : {};
   var result = aesCmac(key, messageBuffer);
+  return  options.returnAsBuffer ? result : result.toString('hex');
+};
+
+exports.tdesCmac = function (key, message, options) {
+  validateKey(key);
+  var messageBuffer = validateMessage(message);
+  options = options ? options : {};
+  var result = tdesCmac(key, messageBuffer);
   return  options.returnAsBuffer ? result : result.toString('hex');
 };
 
